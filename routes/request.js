@@ -101,12 +101,13 @@ const sendEmailNotification = async (requestData) => {
 router.post("/request-help", async (req, res) => {
   console.log("📥 REQUEST RECEIVED:", req.body);
   try {
-    const { name, need, severity, location, urgency } = req.body;
+    const { userId, name, need, severity, location, urgency } = req.body;
 
     const finalUrgency = urgency || 1;
     const priority = severity * finalUrgency;
 
     const newRequest = new Request({
+      userId,
       name,
       need,
       severity,
@@ -148,10 +149,14 @@ router.put("/resolve/:id", async (req, res) => {
   }
 });
 
-// ✅ GET: Fetch all requests
+// ✅ GET: Fetch user requests
 router.get("/all-requests", async (req, res) => {
   try {
-    const data = await Request.find().sort({ priority: -1 });
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).json({ error: "userId is required" });
+    }
+    const data = await Request.find({ userId }).sort({ priority: -1 });
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

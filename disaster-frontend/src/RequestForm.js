@@ -111,7 +111,16 @@ function RequestForm() {
     setSuccess("");
 
     try {
+      const userStr = localStorage.getItem("user");
+      if (!userStr) {
+        setError("You must be logged in to request help.");
+        setLoading(false);
+        return;
+      }
+      const user = JSON.parse(userStr);
+
       await axios.post(`${API_URL}/api/request-help`, {
+        userId: user._id,
         name,
         need,
         severity: Number(severity),

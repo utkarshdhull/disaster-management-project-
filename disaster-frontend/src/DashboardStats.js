@@ -15,7 +15,12 @@ function DashboardStats() {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/all-requests`);
+      const userStr = localStorage.getItem("user");
+      if (!userStr) return;
+      const user = JSON.parse(userStr);
+      const res = await axios.get(`${API_URL}/api/all-requests`, {
+        params: { userId: user._id }
+      });
       setRequests(res.data);
     } catch (err) {
       console.error(err);
@@ -26,7 +31,15 @@ function DashboardStats() {
     fetchRequests();
 
     const socket = io(API_URL);
-    socket.on("newRequest", fetchRequests);
+    socket.on("newRequest", (newReq) => {
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        if (newReq.userId === user._id) {
+          fetchRequests();
+        }
+      }
+    });
 
     return () => socket.disconnect();
   }, []);
