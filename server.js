@@ -49,8 +49,8 @@ app.use("/api/auth", require("./routes/auth"));
 const buildPath = path.join(__dirname, "disaster-frontend", "build");
 app.use(express.static(buildPath));
 
-// Catch-all: send React's index.html for any non-API route
-app.get("*", (req, res) => {
+// Catch-all: send React's index.html for any non-API route (Express 5 syntax)
+app.get("/{*path}", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));
 });
 
