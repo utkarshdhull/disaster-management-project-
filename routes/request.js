@@ -139,7 +139,7 @@ router.put("/resolve/:id", async (req, res) => {
     const updated = await Request.findByIdAndUpdate(
       req.params.id,
       { status: "resolved" },
-      { new: true }
+      { returnDocument: "after" }
     );
 
     res.json(updated);
