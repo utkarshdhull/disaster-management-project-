@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
 
@@ -43,6 +44,15 @@ io.on("connection", (socket) => {
 // Routes
 app.use("/api", require("./routes/request"));
 app.use("/api/auth", require("./routes/auth"));
+
+// ✅ Serve React frontend in production
+const buildPath = path.join(__dirname, "disaster-frontend", "build");
+app.use(express.static(buildPath));
+
+// Catch-all: send React's index.html for any non-API route
+app.get("*", (req, res) => {
+  res.sendFile(path.join(buildPath, "index.html"));
+});
 
 // ✅ MongoDB connection (env variable with local fallback)
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/disasterDB";

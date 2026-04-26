@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { AlertTriangleIcon, CheckCircleIcon, LocateIcon } from "./icons";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+const API_URL = process.env.REACT_APP_API_URL || "";
 
 function RequestForm() {
   const [name, setName] = useState("");

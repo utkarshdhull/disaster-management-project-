@@ -1,12 +1,24 @@
 # Dependencies
 node_modules/
+disaster-response-system/
 
 # Environment variables (contains secrets)
 .env
+.env.*
+!.env.example
+
+# Build output
+build/
+dist/
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# iCloud duplicates
+* 2.*
+* 2
+* 3.*
 
 # Logs
 *.log

@@ -8,7 +8,7 @@ import {
   ClipboardListIcon,
 } from "./icons";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+const API_URL = process.env.REACT_APP_API_URL || "";
 
 function DashboardStats() {
   const [requests, setRequests] = useState([]);
